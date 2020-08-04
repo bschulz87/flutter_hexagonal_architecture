@@ -1,0 +1,1 @@
+abstract class IUseCaseRequest<TUseCaseResponse> {}
