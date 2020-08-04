@@ -1,8 +1,8 @@
 name: flutter_hexagonal_architecture
 description: A new Flutter package for hexagonal architecture (clean code).
 version: 0.0.1
-author:
-homepage:
+author: Maxime AUBRY<maxime.aubry.76@gmail.com>
+homepage: https://github.com/maxime-aubry/flutter_hexagonal_architecture
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
