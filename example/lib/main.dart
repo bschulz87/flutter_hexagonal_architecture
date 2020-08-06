@@ -1,4 +1,11 @@
+import 'package:example/core/use_cases/rents/create_rent_use_case.dart';
+import 'package:example/core/use_cases/videos/create_video_use_case.dart';
+import 'package:example/infrastructure/entities/rents.dart';
+import 'package:example/infrastructure/entities/user.dart';
+import 'package:example/infrastructure/entities/video.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hexagonal_architecture/flutter_hexagonal_architecture.dart';
+import 'core/use_cases/users/create_user_use_case.dart';
 
 void main() {
   runApp(MyApp());
@@ -50,16 +57,53 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  bool _isUserAdded = false;
+  bool _isVideoAdded = false;
+  bool _isVideoRented = false;
 
-  void _incrementCounter() {
+  User _user;
+  Video _video;
+  Rent _rent;
+
+  void _addUser() async {
+    CreateUserUseCase useCase = new CreateUserUseCase();
+    ObjectPresenter<User> presenter = new ObjectPresenter();
+    await useCase.handle(
+      new CreateUserRequest(null, 'me', 'me'),
+      presenter,
+    );
+
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      this._user = presenter.data;
+      this._isUserAdded = true;
+    });
+  }
+
+  void _addVideo() async {
+    CreateVideoUseCase useCase = new CreateVideoUseCase();
+    ObjectPresenter<Video> presenter = new ObjectPresenter();
+    await useCase.handle(
+      new CreateVideoRequest(null, 'The empire strikes back'),
+      presenter,
+    );
+
+    setState(() {
+      this._video = presenter.data;
+      this._isVideoAdded = true;
+    });
+  }
+
+  void _rentVideo() async {
+    CreateRentUseCase useCase = new CreateRentUseCase();
+    ObjectPresenter<Rent> presenter = new ObjectPresenter();
+    await useCase.handle(
+      new CreateRentRequest(this._user.id, this._video.id, DateTime.now()),
+      presenter,
+    );
+
+    setState(() {
+      this._rent = presenter.data;
+      this._isVideoRented = true;
     });
   }
 
@@ -97,20 +141,35 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            MaterialButton(
+              child: Text('Add me to users'),
+              color: Colors.grey[400],
+              onPressed: (!this._isUserAdded &&
+                      !this._isVideoAdded &&
+                      !this._isVideoRented)
+                  ? this._addUser
+                  : null,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            MaterialButton(
+              child: Text('Add The empire strikes back to videos'),
+              color: Colors.grey[400],
+              onPressed: (this._isUserAdded &&
+                      !this._isVideoAdded &&
+                      !this._isVideoRented)
+                  ? this._addVideo
+                  : null,
+            ),
+            MaterialButton(
+              child: Text('I rent The empire strikes back'),
+              color: Colors.grey[400],
+              onPressed: (this._isUserAdded &&
+                      this._isVideoAdded &&
+                      !this._isVideoRented)
+                  ? this._rentVideo
+                  : null,
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

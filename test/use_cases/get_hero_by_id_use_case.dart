@@ -13,20 +13,18 @@ class GetHeroByIdUseCase
   HeroRepository repository;
 
   @override
-  Future<IOutputPort<UseCaseResponseMessage<Hero>>> handle(
-      GetHeroByIdRequest message) async {
-    ObjectPresenter<Hero> outputPort = new ObjectPresenter();
+  Future<void> handle(GetHeroByIdRequest message,
+      IOutputPort<UseCaseResponseMessage<Hero>> output) async {
     try {
-      GatewayResponse<Hero> hero =
-          await this.repository.getHeroById(message.id);
+      GatewayResponse<Hero> hero = await this.repository.getById(message.id);
       if (!hero.success)
-        throw new UseCaseException('Hero not found.', hero.errors);
-      outputPort.handle(new UseCaseResponseMessage<Hero>.goodResult(hero.data));
+        throw new UseCaseException(
+            'GetHeroByIdUseCase_error', 'Hero is not found.');
+      output.handle(new UseCaseResponseMessage<Hero>.goodResult(hero.data));
     } on UseCaseException catch (e) {
-      outputPort.handle(
-          new UseCaseResponseMessage<Hero>.badResult(e.errors, e.message));
+      output.handle(new UseCaseResponseMessage<Hero>.badResult(
+          new CoreError(e.code, e.description)));
     }
-    return outputPort;
   }
 }
 

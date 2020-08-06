@@ -1,6 +1,7 @@
 class User {
-  User(this.firstname, this.lastname);
+  User(this.id, this.firstname, this.lastname);
 
-  final String firstname;
-  final String lastname;
+  int id;
+  String firstname;
+  String lastname;
 }

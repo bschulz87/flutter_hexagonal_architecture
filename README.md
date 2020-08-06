@@ -44,7 +44,7 @@ class HeroRepository {
 }
 ```
 
-Here, you just get data from database, without changing them.
+Here, you just get data from database or services, without changing them.
 
 Finally, you must add a use case class:
 
@@ -61,17 +61,15 @@ class GetHeroByIdUseCase implements IUseCaseRequestHandler<GetHeroByIdRequest, U
   HeroRepository repository;
 
   @override
-  Future<IOutputPort<UseCaseResponseMessage<Hero>>> handle(GetHeroByIdRequest message) async {
-    ObjectPresenter<Hero> outputPort = new ObjectPresenter();
+  Future<void> handle(GetHeroByIdRequest message, IOutputPort<UseCaseResponseMessage<Hero>> output) async {
     try {
       GatewayResponse<Hero> hero = await this.repository.getHeroById(message.id);
       if (!hero.success)
         throw new UseCaseException('Hero not found.', hero.errors);
-      outputPort.handle(new UseCaseResponseMessage<Hero>.goodResult(hero.data));
+      output.handle(new UseCaseResponseMessage<Hero>.goodResult(hero.data));
     } on UseCaseException catch (e) {
-      outputPort.handle(new UseCaseResponseMessage<Hero>.badResult(e.errors, e.message));
+      output.handle(new UseCaseResponseMessage<Hero>.badResult(e.errors, e.message));
     }
-    return outputPort;
   }
 }
 
@@ -86,6 +84,9 @@ If you want to apply business rules, you must do it right here.
 For example, in a project of video store management, you could make a method for rent a video.
 You would select a user (get user by id), select a video (get video by id) and add item in the renting data table.
 Those three actions are in three different repositories, but in one use case.
+
+```dart
+```
 
 Soon, i will add content to teach how to you utilities with BlOcs.
 
