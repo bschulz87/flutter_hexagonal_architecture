@@ -75,19 +75,12 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.3"
+    version: "0.0.4"
   flutter_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
-  function_types:
-    dependency: transitive
-    description:
-      name: function_types
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.2"
   image:
     dependency: transitive
     description:
@@ -123,13 +116,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
-  queries:
-    dependency: transitive
-    description:
-      name: queries
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.14"
   quiver:
     dependency: transitive
     description:
