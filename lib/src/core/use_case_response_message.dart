@@ -20,11 +20,11 @@ class UseCaseResponseMessage<TResult> {
   }
 
   /// [success] is boolean property that informs the client if the use case worked or not.
-  bool success;
+  late bool success;
 
   /// [error] is a [CoreError] object that provides an error to the client when use case fails.
-  CoreError error;
+  CoreError? error;
 
   /// [data] is a generic type that provides a result to the client.
-  TResult data;
+  TResult? data;
 }

@@ -18,12 +18,11 @@ class HeroRepository {
   Future<GatewayResponse<Hero>> getById(int id) async {
     try {
       // search the hero
-      Hero hero;
-      for (int i = 0; i <= this.heroes.length; i++) {
-        if (this.heroes[i].id == id) {
-          hero = this.heroes[i];
-          break;
-        }
+      Hero? hero;
+
+      var filtered = this.heroes.where((element) => element.id == id);
+      if(filtered.length > 0) {
+        hero = filtered.first;
       }
 
       if (hero == null) throw new Exception('unable to get hero with id $id.');

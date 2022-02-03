@@ -11,7 +11,7 @@ void main() {
     expect(presenter.success, isTrue);
     expect(presenter.error, isNull);
     expect(presenter.data, isNotNull);
-    expect(presenter.data.name, 'Flash Gordon');
+    expect(presenter.data!.name, 'Flash Gordon');
   });
 
   test('gets an error when trying to get a hero with id 11', () async {
@@ -20,8 +20,8 @@ void main() {
     await usecase.handle(new GetHeroByIdRequest(11), presenter);
     expect(presenter.success, isFalse);
     expect(presenter.error, isNotNull);
-    expect(presenter.error.code, '');
-    expect(presenter.error.description, '');
+    expect(presenter.error!.code, 'GetHeroByIdUseCase_error');
+    expect(presenter.error!.description, 'Hero is not found.');
     expect(presenter.data, isNull);
   });
 }

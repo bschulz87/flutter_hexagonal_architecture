@@ -20,11 +20,11 @@ class GatewayResponse<TResult> {
   }
 
   /// [success] is boolean property that informs the client if the use case worked or not.
-  bool success;
+  late bool success;
 
   /// [error] is a [InfraError] object that provides an error to the client when use case fails.
-  InfraError error;
+  InfraError? error;
 
   /// [data] is a generic type that provides a result to the client.
-  TResult data;
+  TResult? data;
 }
